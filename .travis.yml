@@ -7,25 +7,25 @@ services:
   - docker
 jobs:
   include:
-      - stage: Building preCICE
-        name: "Ubuntu 16.04"
-        script:
-        - docker build -f Dockerfile.Ubuntu1604 -t precice .
-        after_success:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker images
-        - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604
-        - docker push $DOCKER_USERNAME/precice_ubuntu1604
+  - stage: Building preCICE
+    name: "Ubuntu 16.04"
+    script:
+    - docker build -f Dockerfile.Ubuntu1604 -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604
+    - docker push $DOCKER_USERNAME/precice_ubuntu1604
 
-      - stage: Building preCICE
-        name: "Ubuntu 18.04"
-        script:
-        - docker build -f Dockerfile.Ubuntu1804 -t precice .
-        after_success:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker images
-        - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
-        - docker push $DOCKER_USERNAME/precice_ubuntu1804
+  - stage: Building preCICE
+    name: "Ubuntu 18.04"
+    script:
+    - docker build -f Dockerfile.Ubuntu1804 -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
+    - docker push $DOCKER_USERNAME/precice_ubuntu1804
 
   - stage: System Tests
     script:

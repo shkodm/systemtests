@@ -71,7 +71,7 @@ if __name__ == "__main__":
     if not args.success:
         system_suffix = ".Ubuntu" + args.os
         # Move ouput to folder of this test case
-        test_folder = 'Test_' + systest + system_suffix
+        test_folder = os.getcwd() + '/Test_' + systest + system_suffix
         if not os.path.isdir(test_folder):
             test_folder = 'Test_' + systest
         source_dir = test_folder + "/Output"
@@ -80,21 +80,19 @@ if __name__ == "__main__":
         # any of the results
         if (not os.path.isdir(source_dir)):
             os.chdir(log_dir)
-            ccall(["git add ."])
+            ccall("git add .")
             ccall("git commit -m \"Failed to produce results. \" -m \"Build url: ${TRAVIS_JOB_WEB_URL}\"")
         else:
-            failure_info = capture_output(["/bin/bash","compare_results.sh", source_dir, test_folder +"/referenceOutput", "10"])
+            os.chdir(log_dir)
             # something was committed to that folder before -> overwrite it
             if os.path.isdir(dest_dir):
-                ccall("rm -rf {}".format(dest_dir))
-
+                ccall("git rm -rf {}".format(dest_dir))
             ccall("mv {} {}".format(source_dir, dest_dir))
-            os.chdir(log_dir)
-            ccall(["git add ."])
+            ccall("git add .")
             if args.branch:
                 ccall("git commit -m \"Output != Reference, local build with preCICE branch: "+ args.branch +"\"")
             else:
-                ccall("git commit -m \"Output != Reference, build number: ${TRAVIS_BUILD_NUMBER} \" -m \"Build url: ${TRAVIS_JOB_WEB_URL}\" -m \"" + failure_info + "\"")
+                ccall("git commit -m \"Output != Reference, build number: ${TRAVIS_BUILD_NUMBER} \" -m \"Build url: ${TRAVIS_JOB_WEB_URL}\"")
     else:
         os.chdir(log_dir)
         ccall("git add .")
