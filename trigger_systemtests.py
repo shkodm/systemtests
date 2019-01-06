@@ -24,6 +24,9 @@ nm_test_map = {'openfoam': ['of-of', 'of-ccx'],
 
 def generate_travis_job(adapter, user):
 
+    triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
+         os.environ else "manual script call"
+
     job_templates= {
         "name":  Template('[16.04] $TESTNAME <-> $TESTNAME'),
         "script": Template('python system_testing.py -s $TEST') ,
@@ -60,7 +63,7 @@ def generate_travis_job(adapter, user):
                 ADAPTER=adapter)
         jobs.append(job)
 
-    job_body["request"]["message"] = adapter + ' systemtest'
+    job_body["request"]["message"] = "{} systemtest. Triggered by:\n{}".format(adapter, triggered_by)
     job_body["request"]["config"]["jobs"]["include"] = jobs;
 
     return job_body
@@ -91,9 +94,11 @@ def generate_failure_callback():
     running anything
     """
 
+    triggered_by = os.environ["TRAVIS_JOB_WEB_URL"];
+
     callback_body={
     "request": {
-      "message": "Systemtests failed",
+     "message": "Systemtests failed. Build url:\n{}".format(triggered_by),
       "branch": "master",
         "config": {
           "merge_mode": "replace",
