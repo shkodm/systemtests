@@ -63,7 +63,7 @@ def generate_travis_job(adapter, user):
                 ADAPTER=adapter)
         jobs.append(job)
 
-    job_body["request"]["message"] = "{} systemtest. Triggered by:\n{}".format(adapter, triggered_by)
+    job_body["request"]["message"] = "{} systemtest. Triggered by:{}".format(adapter, triggered_by)
     job_body["request"]["config"]["jobs"]["include"] = jobs;
 
     return job_body
@@ -98,7 +98,7 @@ def generate_failure_callback():
 
     callback_body={
     "request": {
-     "message": "Systemtests failed. Build url:\n{}".format(triggered_by),
+     "message": "Systemtests failed. Build url:{}".format(triggered_by),
       "branch": "master",
         "config": {
           "merge_mode": "replace",
