@@ -24,7 +24,7 @@ ARG CACHEBUST
 
 # Building openfoam-adapter
 WORKDIR /
-RUN git clone https://github.com/shkodm/openfoam-adapter.git
+RUN git clone https://github.com/precice/openfoam-adapter.git
 WORKDIR /openfoam-adapter
 RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
 
