@@ -35,15 +35,28 @@ if [ -n "$diff_files" ]; then
 
     # Paiwise compares files fields, that are produces from diffs and computes relative difference
     if [ -n "$filtered_diff" ]; then
-      rel_difference=$( echo "$filtered_diff" | awk -v diff_limit="$diff_limit" 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2; for(i = 1; i <= radius;
-      i++) { if ($i != 0) { sum += abs((($(i + radius)-$i)/$i )) } } } END { diff=sum/( NR*radius ); if (diff > diff_limit)  { print diff }}')
+      rel_max_difference=$( echo "$filtered_diff" | awk -v avg_diff_limit="$diff_limit" -v max_diff_limit="$max_diff_limit" 'function abs(v) {return v < 0 ? -v : v} { 
+      radius=NF/2;
+      for(i = 1; i <= radius; i++) {
+      if ($i != 0) {
+        ind_diff= abs((($(i + radius)-$i)/$i ));
+        sum += ind_diff;
+        if  (ind_diff > 0.4 )  { max_diff = ind_diff }
+      }
+     }
+     } END { diff=sum/( NR*radius ); if (diff > diff_limit)  { print diff, max_diff }}')
     fi
 
-    if [ -n "$rel_difference" ]; then
-      echo "Relative difference between $file1 and $file2 is $rel_difference percent"
+    if [ -n "$rel_max_difference" ]; then
+      # split by space and transform into the array
+      difference=( $rel_max_difference )
+      echo "Difference between numerical fields in $file1 and $file2 -  Average: ${difference[0]}. Maximum: ${difference[1]}"
     #  diff -yr --suppress-common-lines "$1" "$2"
     fi
   done
 fi
 
-echo "$only_files"
+# files taht are present only in one system
+if [ -n "$only_files" ]; then
+  echo "$only_files"
+fi
