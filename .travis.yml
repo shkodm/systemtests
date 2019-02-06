@@ -14,8 +14,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604
-    - docker push $DOCKER_USERNAME/precice_ubuntu1604
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604-develop:latest
 
   - stage: Building preCICE
     name: "Ubuntu 18.04"
@@ -24,8 +24,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
-    - docker push $DOCKER_USERNAME/precice_ubuntu1804
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804-develop:latest
 
   - stage: System Tests
     script:
@@ -59,31 +59,31 @@ jobs:
 
 
   - script:
-    - python system_testing.py -s su2-ccx -o 1804
+    - python system_testing.py -s su2-ccx -o Ubuntu1804
     name: "[18.04] SU2 <-> Calculix"
     after_success:
-    - python push.py -s -t su2-ccx -o 1804
+    - python push.py -s -t su2-ccx -o Ubuntu1804
     after_failure:
-    - python push.py -t su2-ccx -o 1804
+    - python push.py -t su2-ccx -o Ubuntu1804
   - script:
-    - python system_testing.py -s of-of -o 1804
+    - python system_testing.py -s of-of -o Ubuntu1804
     name: "[18.04] OpenFOAM <-> OpenFOAM"
     after_success:
-    - python push.py -s -t of-of -o 1804
+    - python push.py -s -t of-of -o Ubuntu1804
     after_failure:
-    - python push.py -t of-of -o 1804
+    - python push.py -t of-of -o Ubuntu1804
   - script:
-    - python system_testing.py -s of-ccx -o 1804
+    - python system_testing.py -s of-ccx -o Ubuntu1804
     name: "[18.04] Calculix <-> OpenFOAM"
     after_success:
-    - python push.py -s -t of-ccx -o 1804
+    - python push.py -s -t of-ccx -o Ubuntu1804
     after_failure:
-    - python push.py -t of-ccx -o 1804
+    - python push.py -t of-ccx -o Ubuntu1804
   - script:
-    - python system_testing.py -s bindings -o 1804
+    - python system_testing.py -s bindings -o Ubuntu1804
     name: "[18.04] Python bindings"
     after_success:
-    - python push.py -s -t bindings -o 1804
+    - python push.py -s -t bindings -o Ubuntu1804
     after_failure:
-    - python push.py -t bindings -o 1804
+    - python push.py -t bindings -o Ubuntu1804
 
