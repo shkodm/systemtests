@@ -45,7 +45,7 @@ ARG petsc_para=OFF
 ARG mpi_para=ON
 ARG python_para=OFF
 RUN mkdir build && cd build && \
-    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para && \
+    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para .. && \
     make -j$(nproc)
 
 # Setting preCICE environment variables
