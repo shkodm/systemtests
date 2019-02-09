@@ -15,7 +15,8 @@ RUN apt-get -qq update && apt-get -qq install \
     python-numpy \
     python-dev \
     wget \
-    bzip2    
+    bzip2 \
+    cmake 
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
