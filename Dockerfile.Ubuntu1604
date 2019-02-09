@@ -40,10 +40,12 @@ WORKDIR precice
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
 # scons petsc=yes mpi=yes python=no compiler="mpicxx" -j2
-ARG petsc_para=no
-ARG mpi_para=yes
-ARG python_para=no
-RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j$(nproc)
+ARG petsc_para=OFF
+ARG mpi_para=ON
+ARG python_para=OFF
+RUN mkdir build && cd build && \
+    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para && \
+    make -j$(nproc)
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/precice"
