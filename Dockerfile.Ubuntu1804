@@ -40,7 +40,7 @@ ARG mpi_para=ON
 ARG python_para=OFF
 RUN mkdir build && cd build && \
     cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para .. && \
-    make -j$(nproc) && make instal 
+    make -j$(nproc) && make install
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/precice"
