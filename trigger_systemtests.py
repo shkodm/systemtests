@@ -22,7 +22,6 @@ nm_test_map = {'openfoam': ['of-of', 'of-ccx'],
         'calculix': ['of-ccx', 'su2-ccx'],
         'su2': ['su2-ccx'] }
 
-
 def get_json_response(url, **kwargs):
 
     headers = {
@@ -143,10 +142,22 @@ def check_job_status(job_id):
     resp =  get_json_response(url)
     return resp['state']
 
+def get_job_commit(job_id):
+    """ Checks commit that triggered travis job"""
+    url = "https://api.{TRAVIS_URL}/job/{JOB_ID}".format(TRAVIS_URL="travis-ci.org", JOB_ID=job_id)
+
+    resp =  get_json_response(url)
+    return resp['commit']
+
 def get_requests(user, repo):
 
     url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/requests".format(TRAVIS_URL="travis-ci.org",
             USER=user, REPO=repo )
+    return get_json_response(url)
+
+def get_builds(user, repo, offset=0):
+    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/builds?offset={OFFSET}".format(TRAVIS_URL="travis-ci.org",
+            USER=user, REPO=repo, OFFSET = offset)
     return get_json_response(url)
 
 def query_request_info(user, repo, req_id):
@@ -154,6 +165,21 @@ def query_request_info(user, repo, req_id):
     url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/request/{REQUEST_ID}".format(TRAVIS_URL="travis-ci.org",
             USER=user, REPO=repo, REQUEST_ID=req_id)
     return get_json_response(url)
+
+def last_successfull_commit(user, repo):
+
+    commit = {}
+    offset = 0
+    while not commit:
+        builds = get_builds(user, repo, offset = offset)
+        for build in builds["builds"]:
+            if build["state"] == "passed":
+                commit = build["commit"]
+                break
+        offset += 25
+
+    return commit
+
 
 def trigger_travis_and_wait_and_respond(job_body, user, repo):
 
