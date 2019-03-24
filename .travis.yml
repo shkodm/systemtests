@@ -26,8 +26,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604-develop.sudo
-    - docker push $DOCKER_USERNAME/precice-ubuntu1604-develop.sudo
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop
 
   - stage: Building preCICE
     if: fork = false
@@ -37,8 +37,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604-develop.package
-    - docker push $DOCKER_USERNAME/precice-ubuntu1604-develop.package
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.package-develop
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop
       
   - stage: Building preCICE
     name: "Ubuntu 18.04.home"
@@ -48,8 +48,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804-develop.home
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804-develop.home
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.home-develop
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.sudo"
@@ -59,8 +59,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804-develop.sudo
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804-develop.sudo
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.package"
@@ -70,8 +70,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804-develop.package
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804-develop.package
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.package-develop
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop
 
   - name: "[Build on fork] Using cached version"
     if: fork = true
