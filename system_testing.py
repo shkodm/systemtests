@@ -28,7 +28,7 @@ def build(systest, tag, branch, local, force_rebuild):
     else:
         docker.build_image(tag = test_tag,
                            build_args = {"from" :
-                               'precice/' + baseimage_name},
+                               'precicecoupling/' + baseimage_name},
                            force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
