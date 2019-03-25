@@ -24,6 +24,7 @@ LIBS = \
     	-lm -lc -lpthread\
 			$(PKGCONF_LIBS) \
 			-lstdc++ \
+			-lyaml-cpp \
 
 
 # Compilers and flags
