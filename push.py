@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='Build local.')
 parser.add_argument('-b', '--branch', help="log choosen preCICE branch")
 parser.add_argument('-t', '--test', help="choose system tests you want to use")
 parser.add_argument('-s', '--success', action='store_true' ,help="only upload log file")
-parser.add_argument('--base', type=str,help="Base preCICE image used", default= "Ubuntu1604")
+parser.add_argument('--base', type=str,help="Base preCICE image used", default= "Ubuntu1604.sudo")
 
 args = parser.parse_args()
 
