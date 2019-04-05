@@ -74,7 +74,7 @@ def create_job_log(test, log, exit_status):
     log.write('```\n')
     log.write(get_travis_job_log(job_id))
     log.write('```\n')
-
+    log.write(make_md_link("Full job log", "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)))
 
 if __name__ == "__main__":
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     log = open("log_" + systest + ".md", "w")
     localtime = str(time.asctime(time.localtime(time.time())))
     log.write("System testing at " + localtime + "\n")
-    create_job_log(systest,log, args.success)
+    create_job_log(systest,log, not args.success)
     log.close()
     # Push output file and logfile to repo.
     # Clone repository.
