@@ -70,7 +70,7 @@ def create_job_log(test, log, exit_status):
 
         log.write(failed_info)
 
-    log.write("## Last 100 lines of the job log...\n")
+    log.write("## Last 100 lines of the job log at the moment of push...\n")
     log.write('```\n')
     log.write(get_travis_job_log(job_id))
     log.write('```\n')
