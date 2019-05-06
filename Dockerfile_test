@@ -1,0 +1,49 @@
+# Test dockerfile to check reusage of ccache
+
+# Using ubuntu 16.04 as basis
+FROM ubuntu:16.04
+# in case we want to synhronize ccache with host
+ARG CCACHE_REMOTE
+
+# Installing necessary dependacies for preCICE
+RUN apt-get -qq update && apt-get -qq install \
+    build-essential \
+    git \
+    gfortran \
+    wget \
+    python \
+    rsync \
+    ccache
+
+# Installing cmake
+WORKDIR /cmake
+RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
+ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+# create user precice
+RUN useradd -ms /bin/bash precice
+USER precice
+WORKDIR /home/precice
+
+# Building
+ARG branch=develop
+RUN git clone https://github.com/bast/cmake-example /home/precice/cmake-example
+WORKDIR /home/precice/cmake-example
+# conditionally copy results from the cache
+RUN echo ${RSYNC_IP}
+RUN echo ${RSYNC_PORT}
+
+RUN if [ ! -z "$CCACHE_REMOTE" ]; then\
+        rsync -azpvr ${CCACHE_REMOTE} ~/.ccache; \
+    fi
+
+# compile, conditionally update the cache and then remove it from the image
+RUN cmake -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -H. -Bbuild &&\
+    cd build &&\
+    cmake --build . &&\
+    if [ ! -z "${CCACHE_REMOTE}" ]; then \
+      rsync -azpvr --delete ~/.ccache/ ${CCACHE_REMOTE} &&\
+      rm -rf ~/.ccache; \
+    fi
