@@ -63,13 +63,13 @@ RUN mkdir /home/precice/precice-build && \
           -DPYTHON=$python_para \
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           /home/precice/precice && \
+    make -j$(nproc) && \
+    make test_base && \
+    make package && \
     if [ ! -z "${CCACHE_REMOTE}" ]; then \
       rsync -azpvr --delete ~/.ccache/ ${CCACHE_REMOTE} &&\
       rm -rf ~/.ccache; \
     fi && \
-    make -j$(nproc) && \
-    make test_base && \
-    make package && \
     mv $(find . -maxdepth 1 -name "*.deb") /home/precice && \
     rm -r /home/precice/precice-build  # copy *.deb to home/precice; we do not need the remaining files in precice-build anymore and delete them
 # user with sudo rights is needed to install preCICE in debian package
