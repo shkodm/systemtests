@@ -17,7 +17,7 @@ mkdir -p "$HOME/ccache/${PROJ_FOLDER}"
 
 RSYNC_SERVER_IP=$( ip -4 -o addr show docker0 | awk '{print $4}' | cut -d "/" -f 1 )
 RSYNC_CONFIG=$(mktemp)
-# allow access from docker container (we create only one, so name is hardcoded)
+# allow access from docker container
 cat <<EOF > "${RSYNC_CONFIG}"
 [precice-docker-cache]
         path = $HOME/ccache/${PROJ_FOLDER}
