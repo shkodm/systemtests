@@ -10,16 +10,122 @@ cache:
     - $HOME/ccache
 jobs:
   include:
-   - stage: Building preCICE with ccache
-     name: "Ubuntu 18.04.package"
-     if: fork = false
-     script:
-     - source setup_ccache_sync.sh ubuntu1804
-     - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
 
-   - stage: Building some another sample project
-     name: "Sample Cmake project"
-     if: fork = false
-     script:
-     - source setup_ccache_sync.sh cmake_project
-     - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile_test -t cmake_project .
+  - stage: Building preCICE
+    if: fork = false
+    name: "Arch Linux"
+    script:
+    - source setup_ccache_sync.sh arch
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Arch -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-arch-develop:latest
+    - docker push $DOCKER_USERNAME/precice-arch-develop:latest
+
+  - stage: Building preCICE
+    if: fork = false
+    name: "Ubuntu 16.04 home"
+    script:
+    - source setup_ccache_sync.sh ubuntu1604
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.home -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
+
+  - stage: Building preCICE
+    if: type = cron
+    name: "Ubuntu 16.04.sudo"
+    script:
+    - source setup_ccache_sync.sh ubuntu1604
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.sudo -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
+
+  - stage: Building preCICE
+    if: type = cron
+    name: "Ubuntu 16.04.package"
+    script:
+    - source setup_ccache_sync.sh ubuntu1604
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.package -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.home"
+    if: type = cron
+    script:
+    - source setup_ccache_sync.sh ubuntu1804
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.home -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.sudo"
+    if: type = cron
+    script:
+    - source setup_ccache_sync.sh ubuntu1804
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.sudo -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop:latest
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.package"
+    if: fork = false
+    script:
+    - source setup_ccache_sync.sh ubuntu1804
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.package-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop:latest
+
+  - name: "[Build on fork] Using cached version"
+    if: fork = true
+    script: true
+
+
+  - stage: System Tests
+    script:
+    - python system_testing.py -s su2-ccx
+    name: "[16.04] SU2 <-> Calculix"
+    after_success:
+    - python push.py -s -t su2-ccx
+    after_failure:
+    - python push.py -t su2-ccx
+  - script:
+    - python system_testing.py -s of-of
+    name: "[16.04] OpenFOAM <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t of-of
+    after_failure:
+    - python push.py -t of-of
+  - script:
+    - python system_testing.py -s of-ccx
+    name: "[16.04] Calculix <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t of-ccx
+    after_failure:
+    - python push.py -t of-ccx
+  - script:
+    - python system_testing.py -s bindings
+    name: "[16.04] Python bindings"
+    after_success:
+    - python push.py -s -t bindings
+    after_failure:
+    - python push.py -t bindings
