@@ -6,12 +6,20 @@ python:
 services:
   - docker
 cache:
-  - $HOME/ccache
+  directories:
+    - $HOME/ccache
 jobs:
   include:
    - stage: Building preCICE with ccache
      name: "Ubuntu 18.04.package"
      if: fork = false
      script:
-     - source setup_ccache_sync.sh
+     - source setup_ccache_sync.sh ubuntu1804
      - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
+
+   - stage: Building some another sample project
+     name: "Sample Cmake project"
+     if: fork = false
+     script:
+     - source setup_ccache_sync.sh cmake_project
+     - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile_test -t cmake_project .
