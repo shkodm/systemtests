@@ -14,6 +14,7 @@ Example:
 
 import argparse, filecmp, os, shutil, sys
 import common, docker
+import os
 from common import ccall, get_test_variants, filter_tests
 
 def build(systest, tag, branch, local, force_rebuild):
@@ -26,8 +27,9 @@ def build(systest, tag, branch, local, force_rebuild):
                            force_rebuild = force_rebuild)
     else:
         docker.build_image(tag = test_tag,
-                           build_args = {"from" :
-                               'precice/' + baseimage_name},
+                           build_args = {"from":     'precice/' + baseimage_name,
+                                   "SOLVERS_REMOTE":
+                                   os.environ.get("SOLVERS_REMOTE","")},
                            force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
