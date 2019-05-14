@@ -76,14 +76,14 @@ fi
 
 # if we are not on travis or folder with the corresponding version was not created yet,
 # let the remaining installation instructions in the docker file handle it
-if [ -z "${DEPS_REMOTE}" ] || [ rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1 ]; then
+if [ -z "${DEPS_REMOTE}" ] || ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1  ; then
   echo "Not copying anything, fetching the data for the first time"
   rsync --list-only "${DEPS_REMOTE}/${DEP}"
   exit 0
 # else just copy cached version and don't follow up with any chained commands
 else
+  echo "Trying to copy cached data back to the container"
   rsync --list-only "${DEPS_REMOTE}/${DEP}"
   rsync -azpvrq ${DEPS_REMOTE}/${DEP} ${PREFIX}
-  echo "Using cached data"
   exit 1
 fi

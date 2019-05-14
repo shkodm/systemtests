@@ -60,7 +60,7 @@ fi
 
 # if we are on travis and this is the build with the first download, copy it back to the host
 # let the remaining installation instructions in the docker file handle it, otherwise no need to do anything
-if [ ! -z "${DEPS_REMOTE}" ] && rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1  ; then
+if [ ! -z "${DEPS_REMOTE}" ] &&  ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1 ; then
   rsync --list-only "${DEPS_REMOTE}/${DEP}"
   rsync -azpvrq ${PREFIX}/${DEP} ${DEPS_REMOTE}
   echo "Copying just fetched data back to the cache"
