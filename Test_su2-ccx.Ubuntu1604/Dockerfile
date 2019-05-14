@@ -79,7 +79,7 @@ RUN ./su2AdapterInstall
 
 WORKDIR /su2-source
 RUN ./configure --prefix=${SU2_BIN} --with-cxx="ccache g++" CXXFLAGS="-std=c++11" --enable-mpi
-RUN bash /home/pre_install_hook.sh --dep=su2 --ccache &&
+RUN bash /home/pre_install_hook.sh --dep=su2 --ccache && \
     make -j 2 install &&\
     bash /home/post_install_hook.sh --dep=su2 --ccache
 
