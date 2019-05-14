@@ -16,7 +16,7 @@ jobs:
     name: "Arch Linux"
     script:
     - source setup_docker_ci_cache.sh arch
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Arch -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Arch -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -28,7 +28,7 @@ jobs:
     name: "Ubuntu 16.04 home"
     script:
     - source setup_docker_ci_cache.sh ubuntu1604
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1604.home -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1604.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -40,7 +40,7 @@ jobs:
     name: "Ubuntu 16.04.sudo"
     script:
     - source setup_docker_ci_cache.sh ubuntu1604
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1604.sudo -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1604.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -52,7 +52,7 @@ jobs:
     name: "Ubuntu 16.04.package"
     script:
     - source setup_docker_ci_cache.sh ubuntu1604
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1604.package -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1604.package -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -64,7 +64,7 @@ jobs:
     if: type = cron
     script:
     - source setup_docker_ci_cache.sh ubuntu1804
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1804.home -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1804.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -76,7 +76,7 @@ jobs:
     if: type = cron
     script:
     - source setup_docker_ci_cache.sh ubuntu1804
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1804.sudo -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1804.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -88,7 +88,7 @@ jobs:
     if: fork = false
     script:
     - source setup_docker_ci_cache.sh ubuntu1804
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-args DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE --build-arg DEPS_REMOTE=$DEPS_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
