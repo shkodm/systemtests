@@ -8,7 +8,7 @@ ARG DEPS_REMOTE
 ENV CCACHE_REMOTE=${CCACHE_REMOTE}
 ENV DEPS_REMOTE=${DEPS_REMOTE}
 
-RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git scons openmpi python2 python2-numpy rsync
+RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git scons openmpi python2 python2-numpy rsync ccache
 
 COPY pre_install_hook.sh post_install_hook.sh /home/
 # Some parameters for the build, you can set them in the build command e.g.
