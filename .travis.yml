@@ -104,6 +104,7 @@ jobs:
     script:
     - source setup_docker_ci_cache.sh ubuntu1604
     - export DEPS_REMOTE="${DEPS_REMOTE}"
+    - export CCACHE_REMOTE="${CCACHE_REMOTE}"
     - python system_testing.py -s su2-ccx
     name: "[16.04] SU2 <-> Calculix"
     after_success:
@@ -113,6 +114,7 @@ jobs:
   - script:
     - source setup_docker_ci_cache.sh ubuntu1604
     - export DEPS_REMOTE="${DEPS_REMOTE}"
+    - export CCACHE_REMOTE="${CCACHE_REMOTE}"
     - python system_testing.py -s of-of
     name: "[16.04] OpenFOAM <-> OpenFOAM"
     after_success:
@@ -125,12 +127,14 @@ jobs:
     after_success:
     - source setup_docker_ci_cache.sh ubuntu1604
     - export DEPS_REMOTE="${DEPS_REMOTE}"
+    - export CCACHE_REMOTE="${CCACHE_REMOTE}"
     - python push.py -s -t of-ccx
     after_failure:
     - python push.py -t of-ccx
   - script:
     - source setup_docker_ci_cache.sh ubuntu1604
     - export DEPS_REMOTE="${DEPS_REMOTE}"
+    - export CCACHE_REMOTE="${CCACHE_REMOTE}"
     - python system_testing.py -s bindings
     name: "[16.04] Python bindings"
     after_success:

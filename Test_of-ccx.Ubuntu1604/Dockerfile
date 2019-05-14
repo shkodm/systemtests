@@ -8,7 +8,10 @@ USER root
 ENV USER=root
 
 ARG DEPS_REMOTE
-ENV DEPS=${DEPS_REMOTE}
+ENV DEPS_REMOTE=${DEPS_REMOTE}
+
+ARG CCACHE_REMOTE
+ENV CCACHE_REMOTE=${CCACHE_REMOTE}
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
