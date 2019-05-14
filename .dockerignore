@@ -1,2 +1,3 @@
 *
-!*.sh
+!pre_install_hook.sh
+!post_install_hook.sh

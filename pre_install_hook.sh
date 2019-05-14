@@ -17,8 +17,8 @@
 # ----- preCICE
 
 # It should be used before the chained command that does the compilation or fetches arhieves
-# together with post_install_hook.sh right after the compilation command. In case of usage, please
-# also pipe `return 0`, so that docker treats execution as successfull
+# together with post_install_hook.sh right after the compilation command. When caching source code of something
+# also pipe `return 0` so that docker treats execution as successfull
 
 info()
 {
@@ -77,9 +77,11 @@ fi
 # if we are not on travis or folder with the corresponding version was not created yet,
 # let the remaining installation instructions in the docker file handle it
 if [ -z "${DEPS_REMOTE}" ] || [ rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1 ]; then
+  echo "Not copying anything, fetching the data for the first time"
   exit 0
 # else just copy cached version and don't follow up with any chained commands
 else
   rsync -azpvrq ${DEPS_REMOTE}/${DEP} ${PREFIX}
+  echo "Using cached data"
   exit 1
 fi
