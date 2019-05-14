@@ -31,8 +31,10 @@ RUN mkdir spooles.2.2 && cd spooles.2.2 && \
     cd /spooles.2.2/Tree/src/ && \
     sed -i 's/drawTree/draw/g' makeGlobalLib && \
     cd /spooles.2.2/ && \
-    sed -i "s#CC = /usr/lang-4.0/bin/cc#CC = /usr/bin/cc#g" Make.inc && \
-    make lib && cd /spooles.2.2/MT/src/ && make
+    sed -i "s#CC = /usr/lang-4.0/bin/cc#CC = ccache /usr/bin/cc#g" Make.inc &&\
+    bash /home/pre_install_hook.sh --dep=spooles --ccache && \
+    make lib && cd /spooles.2.2/MT/src/ && make && \
+    bash /home/post_install_hook.sh --dep=spooles --ccache
 
 # Downloading and installing ARPACK
 WORKDIR /
