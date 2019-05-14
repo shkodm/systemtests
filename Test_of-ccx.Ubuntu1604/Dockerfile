@@ -76,7 +76,9 @@ WORKDIR /
 RUN git clone https://github.com/precice/calculix-adapter.git
 WORKDIR /calculix-adapter/
 COPY Makefile_of_ccx /calculix-adapter/Makefile
-RUN make
+RUN bash /home/pre_install_hook.sh --dep=calculix --ccache && \
+    make && \
+    bash /home/post_install_hook.sh --dep=calculix --ccache
 
 ENV PATH="/calculix-adapter/bin:${PATH}"
 

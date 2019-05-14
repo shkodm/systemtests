@@ -32,7 +32,7 @@ LIBS = \
 #FFLAGS = -g -Wall -O0 -fopenmp $(INCLUDES)
 CFLAGS = -Wall -O3 -fopenmp $(INCLUDES) -DARCH="Linux" -DSPOOLES -DARPACK -DMATRIXSTORAGE
 FFLAGS = -Wall -O3 -fopenmp $(INCLUDES)
-CC = mpicc
+CC = ccache mpicc
 FC = mpifort
 # FC = mpif90
 # FC = gfortran
