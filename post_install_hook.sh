@@ -54,6 +54,7 @@ fi
 
 # copy cache back to the individual folder and clean up the leftovers from previous builds
 if [ "$CCACHE" = true ] && [ ! -z "$CCACHE_REMOTE" ]; then
+        echo "Copying updated ccache back to the host"
         rsync -azpvrq --delete ${PREFIX}/.ccache/ ${CCACHE_REMOTE}/${DEP}
         exit 0
 fi

@@ -70,6 +70,7 @@ fi
 
 # sync ccache if we are running on travis and actually want to sync
 if [ "$CCACHE" = true ] && [ ! -z "$CCACHE_REMOTE" ]; then
+        echo "Copy ccache from the host to the container"
         rsync -azpvrq ${CCACHE_REMOTE}/${DEP}/ ${PREFIX}/.ccache
         exit 0
 fi
