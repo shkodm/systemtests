@@ -7,6 +7,9 @@ FROM $from
 USER root
 ENV USER=root
 
+ARG DEPS_REMOTE
+ENV DEPS=${DEPS_REMOTE}
+
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
     cmake \
@@ -58,7 +61,10 @@ ENV PATH="/calculix-adapter/bin:${PATH}"
 
 # Downloading SU2 and SU2-adapter
 WORKDIR /
-RUN git clone --branch v6.0.0 https://github.com/su2code/SU2.git su2-source
+RUN bash /home/pre_install_hook.sh --dep=su2-source --prefix="/" && \
+    git clone --branch v6.0.0 https://github.com/su2code/SU2.git su2-source && \
+    bash /home/post_install_hook.sh --dep=su2-source --prefix="/" ; return 0
+
 RUN git clone https://github.com/precice/su2-adapter.git
 
 ENV SU2_HOME="/su2-source" \
