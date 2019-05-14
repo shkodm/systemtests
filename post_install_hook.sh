@@ -18,6 +18,9 @@ PREFIX="$HOME"
 DEP=""
 CCACHE=false
 
+
+print "Running post script"
+
 for arg in "$@"
 do
   case $arg in
@@ -54,15 +57,15 @@ fi
 
 # copy cache back to the individual folder and clean up the leftovers from previous builds
 if [ "$CCACHE" = true ] && [ ! -z "$CCACHE_REMOTE" ]; then
-        echo "Copying updated ccache back to the host"
-        rsync -azpvrq --delete ${PREFIX}/.ccache/ ${CCACHE_REMOTE}/${DEP}
-        exit 0
+  rsync -azpvrq --delete ${PREFIX}/.ccache/ ${CCACHE_REMOTE}/${DEP}
+  exit 0
 fi
+
+print "Not using ccache"
 
 # if we are on travis and this is the build with the first download, copy it back to the host
 # let the remaining installation instructions in the docker file handle it, otherwise no need to do anything
 if [ ! -z "${DEPS_REMOTE}" ] &&  ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1 ; then
-  rsync --list-only "${DEPS_REMOTE}/${DEP}"
   rsync -azpvrq ${PREFIX}/${DEP} ${DEPS_REMOTE}
   echo "Copying just fetched data back to the cache"
 fi

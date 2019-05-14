@@ -34,9 +34,7 @@ COPY pre_install_hook.sh post_install_hook.sh /home/
 WORKDIR /boost-build
 RUN echo "using gcc : : ccache g++ ;" > ~/user_config.jam && \
     bash /home/pre_install_hook.sh --dep=boost --ccache && \
-    bash /home/pre_install_hook.sh --dep=boost_1_65_1 --prefix="/boost-build/" && \
     wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
-    bash /home/post_install_hook.sh --dep=boost_1_65_1 --prefix="/boost-build/" ; return 0 && \
     cd boost_1_65_1 && \
     ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
     ./b2 -j$(nproc) install && \

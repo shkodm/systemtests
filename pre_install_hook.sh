@@ -34,6 +34,8 @@ PREFIX="$HOME"
 DEP=""
 CCACHE=false
 
+print "Running pre script"
+
 for arg in "$@"
 do
   case $arg in
@@ -69,22 +71,22 @@ if [ -z "$DEP" ]; then
 fi
 
 # sync ccache if we are running on travis and actually want to sync
-if [ "$CCACHE" = true ] && [ ! -z "$CCACHE_REMOTE" ]; then
-        echo "Copy ccache from the host to the container"
-        rsync -azpvrq ${CCACHE_REMOTE}/${DEP}/ ${PREFIX}/.ccache
-        exit 0
+if [ "$CCACHE" = true ] && [ ! -z "${CCACHE_REMOTE}" ]; then
+  echo "Copy ccache from the host to the container"
+  rsync -azpvrq ${CCACHE_REMOTE}/${DEP}/ ${PREFIX}/.ccache
+  exit 0
 fi
+
+print "Not using ccache"
 
 # if we are not on travis or folder with the corresponding version was not created yet,
 # let the remaining installation instructions in the docker file handle it
 if [ -z "${DEPS_REMOTE}" ] || ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1  ; then
   echo "Not copying anything, fetching the data for the first time"
-  rsync --list-only "${DEPS_REMOTE}/${DEP}"
   exit 0
 # else just copy cached version and don't follow up with any chained commands
 else
   echo "Trying to copy cached data back to the container"
-  rsync --list-only "${DEPS_REMOTE}/${DEP}"
   rsync -azpvrq ${DEPS_REMOTE}/${DEP} ${PREFIX}
   exit 1
 fi
