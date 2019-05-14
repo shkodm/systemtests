@@ -5,8 +5,8 @@ FROM ubuntu:16.04
 ARG CCACHE_REMOTE
 ARG DEPS_REMOTE
 
-ARG CCACHE_REMOTE=${CCACHE_REMOTE}
-ARG DEPS_REMOTE=${DEPS_REMOTE}
+ENV CCACHE_REMOTE=${CCACHE_REMOTE}
+ENV DEPS_REMOTE=${DEPS_REMOTE}
 
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
