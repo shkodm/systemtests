@@ -8,6 +8,7 @@ services:
 cache:
   directories:
     - $HOME/cache
+  timeout: 1000
 jobs:
   include:
 
