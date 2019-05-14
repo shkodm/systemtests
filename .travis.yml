@@ -104,6 +104,7 @@ jobs:
     script:
     - source setup_docker_ci_cache.sh ubuntu1604
     - export DEPS_REMOTE="${DEPS_REMOTE}"
+    - python system_testing.py -s su2-ccx
     name: "[16.04] SU2 <-> Calculix"
     after_success:
     - python push.py -s -t su2-ccx

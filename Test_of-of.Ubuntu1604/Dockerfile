@@ -18,12 +18,12 @@ RUN apt-get -qq update && apt-get -qq install \
     rm -rf /var/lib/apt/lists/*
 
 # Installing OpenFOAM 4.1
-RUN bash /home/pre_install_hook.sh --dep=openfoam4 --prefix="/" && \
+RUN bash /home/pre_install_hook.sh --dep=openfoam4 --prefix="/opt/" && \
     add-apt-repository "http://dl.openfoam.org/ubuntu dev" \
     && sh -c "wget -O - http://dl.openfoam.org/gpg.key | apt-key add -" \
     && add-apt-repository http://dl.openfoam.org/ubuntu && apt update \
     && apt-get -y install openfoam4 --no-install-recommends && \
-    bash /home/post_install_hook.sh --dep=openfoam4 --prefix="/" ; return 0 && \
+    bash /home/post_install_hook.sh --dep=openfoam4 --prefix="/opt/" ; return 0 && \
     rm -rf /var/lib/apt/lists/*
 
 # Rebuild image if force_rebuild after that command
