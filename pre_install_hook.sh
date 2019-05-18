@@ -24,7 +24,7 @@ info()
 {
  cat << EOF
 
-Usage: pre_install_hook.sh --prefix=/opt/ --dep=openfoam4
+Usage: bash pre_install_hook.sh --prefix=/opt/ --dep=openfoam4
 or to use build caching with  ccache: pre_install_hook.sh --dep=SU2 --ccache
 
 EOF
@@ -34,7 +34,7 @@ PREFIX="$HOME"
 DEP=""
 CCACHE=false
 
-print "Running pre script"
+echo "Running pre script"
 
 for arg in "$@"
 do
@@ -73,14 +73,17 @@ fi
 # sync ccache if we are running on travis and actually want to sync
 if [ "$CCACHE" = true ] && [ ! -z "${CCACHE_REMOTE}" ]; then
   echo "Copying ccache from the host to the container"
-  if ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /dev/null 2>&1 ; then
+  if ! rsync --list-only "${CCACHE_REMOTE}/${DEP}" > /dev/null 2>&1 ; then
     echo "Ccache on host is empty..."
+  else
+    echo "Ccache contains some data"
   fi
+  echo "Prefix is ${PREFIX}"
   rsync -azpvrq ${CCACHE_REMOTE}/${DEP}/ ${PREFIX}/.ccache
   exit 0
 fi
 
-print "Not using ccache"
+echo "Not using ccache"
 
 # if we are not on travis or folder with the corresponding version was not created yet,
 # let the remaining installation instructions in the docker file handle it

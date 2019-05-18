@@ -39,5 +39,5 @@ RSYNC_PORT=2342
 # start rsync in deamon mode
 rsync --port=${RSYNC_PORT} --address="${RSYNC_SERVER_IP}" --config="${RSYNC_CONFIG}" --daemon --no-detach &
 
-CCACHE_REMOTE="rsync://${RSYNC_SERVER_IP}:${RSYNC_PORT}/build-ccache"
-DEPS_REMOTE="rsync://${RSYNC_SERVER_IP}:${RSYNC_PORT}/dependencies-source-cache"
+export CCACHE_REMOTE="rsync://${RSYNC_SERVER_IP}:${RSYNC_PORT}/build-ccache"
+export DEPS_REMOTE="rsync://${RSYNC_SERVER_IP}:${RSYNC_PORT}/dependencies-source-cache"

@@ -19,7 +19,7 @@ DEP=""
 CCACHE=false
 
 
-print "Running post script"
+echo "Running post script"
 
 for arg in "$@"
 do
@@ -59,10 +59,15 @@ fi
 if [ "$CCACHE" = true ] && [ ! -z "$CCACHE_REMOTE" ]; then
   rsync -azpvrq --delete ${PREFIX}/.ccache/ ${CCACHE_REMOTE}/${DEP}
   echo "Copying ccache from container back to the host"
+  if ! rsync --list-only "${CCACHE_REMOTE}/${DEP}" > /dev/null 2>&1 ; then
+    echo "Ccache on host is empty"
+  else
+    echo "Ccahe on host contains something"
   exit 0
+  echo "Prefix is ${PREFIX}"
 fi
 
-print "Not using ccache"
+echo "Not using ccache"
 
 # if we are on travis and this is the build with the first download, copy it back to the host
 # let the remaining installation instructions in the docker file handle it, otherwise no need to do anything
