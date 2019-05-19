@@ -63,6 +63,7 @@ if [ "$CCACHE" = true ] && [ ! -z "$CCACHE_REMOTE" ]; then
     echo "Ccache on host is empty"
   else
     echo "Ccahe on host contains something"
+  fi
   exit 0
   echo "Prefix is ${PREFIX}"
 fi
@@ -75,3 +76,6 @@ if [ ! -z "${DEPS_REMOTE}" ] &&  ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /
   rsync -azpvrq ${PREFIX}/${DEP} ${DEPS_REMOTE}
   echo "Copying just fetched data back to the cache"
 fi
+dfa
+
+
