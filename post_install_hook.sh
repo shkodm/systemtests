@@ -76,6 +76,4 @@ if [ ! -z "${DEPS_REMOTE}" ] &&  ! rsync --list-only "${DEPS_REMOTE}/${DEP}" > /
   rsync -azpvrq ${PREFIX}/${DEP} ${DEPS_REMOTE}
   echo "Copying just fetched data back to the cache"
 fi
-dfa
-
 
